@@ -21,15 +21,15 @@ export default class Welcome extends React.Component{
         firebase.auth().signInWithEmailAndPassword(emailId,password)
         .then(()=>{
             return(
-                this.props.navigation.navigate("BottomTab")
+                this.props.navigation.navigate("Donate")
 
             )
         })
         .catch((error)=>{
             var  errorCode= error.code
-            var ErrMessage=error.ErrMessage
+            
             return(
-                Alert.alert(ErrMessage)
+                Alert.alert(errorCode)
             )
 
         })
@@ -38,7 +38,7 @@ export default class Welcome extends React.Component{
     }
     userSignUp=(emailId,password,confirmedPassword)=>{
         if(password!==confirmedPassword){
-            Alert.alert("Password does not match")
+            window.alert("Password does not match")
         }
         else{
         firebase.auth().createUserWithEmailAndPassword(emailId,password)
@@ -65,9 +65,9 @@ export default class Welcome extends React.Component{
         })
         .catch((error)=>{
             var  errorCode= error.code
-            var ErrMessage=error.ErrMessage
+            
             return(
-                Alert.alert(ErrMessage)
+                window.alert(error.message)
             )
 
         })

@@ -3,7 +3,8 @@ import {View,StyleSheet,Text,Image,TouchableOpacity,TextInput,Alert,Modal,Scroll
 import {ListItem} from 'react-native-elements'
 import db from '../config'
 import firebase from 'firebase'
-import MyHeader from '../Components/Myheader.js'
+
+
 
 export default class BookDonateScreen extends React.Component{
     constructor(){
@@ -16,10 +17,9 @@ export default class BookDonateScreen extends React.Component{
     }
     getRequestBooksList= ()=>{
         this.requestRef=db.collection('request').onSnapshot((snapshot)=>{
-            var requestedBooksList=snapshot.docs.map((document)=>{
-                document.data()
-                console.log(document.data())
-            }
+            var requestedBooksList=snapshot.docs.map(document=>
+               document.data()
+            
            
 
             )
@@ -39,13 +39,14 @@ export default class BookDonateScreen extends React.Component{
         return(
             <ListItem
             key={i}
-            title={item}
-            subTitle={item}
+            title={item.Bookname}
+            subTitle={item.Bookname}
             titleStyle={{color:"black",fontWeight:"bold"}}
-            rightElement={<TouchableOpacity style={Styles.button}>
+            rightElement={<TouchableOpacity style={Styles.button} onPress={this.props.navigation.navigate('RecieverDetails',{"Details":item})}>
                 <Text style={{color:"white",}}>View User</Text>
             </TouchableOpacity>}
             bottomDivider
+        
             />
         )
 
@@ -55,7 +56,7 @@ export default class BookDonateScreen extends React.Component{
         
         return(
             <View style={{flex:1}}>
-                <MyHeader title="Donate Books" navigation={this.props.navigation}/>
+                
         <View style={{flex:1}}>{
             this.state.Books.length===0?
                 (
