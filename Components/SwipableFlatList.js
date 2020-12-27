@@ -11,7 +11,7 @@ constructor(props){
         AllNotifications:this.props.AllNotifications
     }
 }
-updateMarksRead=(notifaction)=>{
+updateMarksRead=(notification)=>{
 db.collection('AllNotifcations').doc(notification.docId).update({
     "Status":"read"
 })
@@ -20,8 +20,8 @@ onSwipeValueChange=(swipeData)=>{
 var AllNotifcations=this.state.AllNotifications
 const {Key,Value}=swipeData
 if(Value<=-Dimensions.get("window").width){
-    const newData=[...AllNotitifications]
-    const Index=AllNotifications.findIndex(item=>item.key===Key)
+    const newData=[...AllNotifcations]
+    const Index=AllNotifcations.findIndex(item=>item.key===Key)
     this.updateMarksRead(AllNotifcations[Index])
     newData.splice(index,1)
     this.setState({

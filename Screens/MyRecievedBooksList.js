@@ -3,34 +3,34 @@ import {View,StyleSheet,Text,Image,TouchableOpacity,TextInput,Alert,Modal,Scroll
 import {ListItem} from 'react-native-elements'
 import db from '../config'
 import firebase from 'firebase'
+import MyHeader from '../Components/Myheader.js'
 
-
-
-export default class BookDonateScreen extends React.Component{
+export default class MyRecievedBooksListScreen extends React.Component{
     constructor(){
         super();
         this.state={
-           Books:[]
-
+            userId:firebase.auth().currentUser.email,
+            allRecievedBooks:[],
         }
         this.requestRef=null
     }
-    getRequestBooksList= ()=>{
-        this.requestRef=db.collection('request').onSnapshot((snapshot)=>{
-            var requestedBooksList=snapshot.docs.map(document=>
+    getRecievedBooksList= ()=>{
+        this.requestRef=db.collection('RecievedBooks').where("UserId","==",this.state.userId).where("BookStatus","==","recieved").onSnapshot((snapshot)=>{
+            var recievedBooksList=snapshot.docs.map(document=>
                document.data()
             
            
 
             )
             this.setState({
-                Books:requestedBooksList
+                allRecievedBooks:recievedBooksList
              })
         })
     }
-    componentDidMount(){
-       this.getRequestBooksList()    
-       console.log(this.state.Books)
+
+     componentDidMount(){
+       this.getRecievedBooksList()    
+     
     }
     componentWillUnmount(){
         this.requestRef()
@@ -39,12 +39,9 @@ export default class BookDonateScreen extends React.Component{
         return(
             <ListItem
             key={i}
-            title={item.Bookname}
-            subTitle={item.Bookname}
+            title={item.BookName}
+            subTitle={item.BookStatus}
             titleStyle={{color:"black",fontWeight:"bold"}}
-            rightElement={<TouchableOpacity style={Styles.button} onPress={this.props.navigation.navigate('RecieverDetails',{"Details":item})}>
-                <Text style={{color:"white",}}>View User</Text>
-            </TouchableOpacity>}
             bottomDivider
         
             />
@@ -56,17 +53,17 @@ export default class BookDonateScreen extends React.Component{
         
         return(
             <View style={{flex:1}}>
-                
+            <MyHeader title="Recieved Books" navigation={...this.props.navigation}/>    
         <View >{
-            this.state.Books.length===0?
+            this.state.allRecievedBooks.length===0?
                 (
                         <View style={{flex:1,justifyContent:"center",alignItems:"center",fontSize:20}}>
-                            <Text style={{fontSize:22}}>Requests are empty</Text>
+                            <Text style={{fontSize:22}}>No Recieved Books</Text>
                         </View>
                     
                 ):
                 (
-                    <FlatList data={this.state.Books} renderItem={
+                    <FlatList data={this.state.allRecievedBooks} renderItem={
                         this.renderItem
                     }
                     keyExtractor={(item,index)=>

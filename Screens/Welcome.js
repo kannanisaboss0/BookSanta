@@ -48,7 +48,8 @@ export default class Welcome extends React.Component{
                 "lastName":this.state.lastName,
                 "contact":this.state.contact,
                 "emailId":this.state.emailId,
-                "address":this.state.address
+                "address":this.state.address,
+                "isBookRequestActive":false,
             })
             return(
                 
